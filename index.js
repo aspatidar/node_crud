@@ -4,16 +4,23 @@ const {connectWithPostgres, sequelize}  = require('./connection');
 const routes = require('./router');
 const bodyparser = require('body-parser');
 const {logReqRes, handleErrors} = require('./middleware');
+const cors = require('cors');
 
 app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
     extended: true
 }));
 
+// Define the CORS options
+app.use(cors()); // Use the cors middleware with your options
+
 // MiddleWare
-app.use(logReqRes());
+app.use(logReqRes({
+    origin: 'http://localhost:8000/'
+}));
 
 // Route 
 app.use('/api', routes);
+
 
 // Error Handler 
 // app.use(handleErrors());
@@ -24,7 +31,7 @@ sequelize.sync().then((res) =>{
     console.log(error)
 })
 
-app.listen(3000, async (req, res) =>{
+app.listen(8000, async (req, res) =>{
     // Connetion establish 
     await connectWithPostgres();
     sequelize.sync({ force: false }).then(() => {
