@@ -8,7 +8,12 @@ const Employee = sequelize.define("employee", {
         autoIncrement: true
     },
     first_name:{
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
+        unique: true,
+        get() {
+            const rawValue = this.getDataValue('first_name');
+            return rawValue ? rawValue.toUpperCase() : null;
+          },
     },
     last_name:{
         type: DataTypes.TEXT
@@ -20,7 +25,8 @@ const Employee = sequelize.define("employee", {
         type: DataTypes.TEXT
     },
     employee_id:{
-        type:DataTypes.INTEGER
+        type:DataTypes.INTEGER,
+        unique: true,
     }
 }
 );

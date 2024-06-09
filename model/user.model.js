@@ -19,9 +19,19 @@ const User = sequelize.define(
     email: {
       type: DataTypes.TEXT,
       unique: true,
+      validate: {
+        isEmail: true
+      }
     },
     gender: {
       type: DataTypes.STRING,
+      validate:{
+        isMale(value){
+          if(value !== 'Male'){
+            throw new Error('Only man can ragister :)');
+          }
+        }
+      }
     },
   }
 );
