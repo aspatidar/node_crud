@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const {connectWithPostgres, sequelize}  = require('./connection');
@@ -5,6 +6,7 @@ const routes = require('./router');
 const bodyparser = require('body-parser');
 const {logReqRes, handleErrors} = require('./middleware');
 const cors = require('cors');
+
 
 app.use(bodyparser.urlencoded({     // to support URL-encoded bodies
     extended: true
@@ -15,7 +17,7 @@ app.use(cors()); // Use the cors middleware with your options
 
 // MiddleWare
 app.use(logReqRes({
-    origin: 'http://localhost:8000/'
+    origin: process.env.ORIGINS
 }));
 
 // Route 
@@ -31,7 +33,7 @@ sequelize.sync().then((res) =>{
     console.log(error)
 })
 
-app.listen(8000, async (req, res) =>{
+app.listen(process.env.PORT, async (req, res) =>{
     // Connetion establish 
     await connectWithPostgres();
     sequelize.sync({ force: false }).then(() => {
