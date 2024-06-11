@@ -36,7 +36,7 @@ sequelize.sync().then((res) =>{
 app.listen(process.env.PORT, async (req, res) =>{
     // Connetion establish 
     await connectWithPostgres();
-    sequelize.sync({ force: false }).then(() => {
+    sequelize.sync().then(() => {
         console.log("Database Connected Successfully");
     });
     // console.log('Server is working');
