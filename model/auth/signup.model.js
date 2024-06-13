@@ -1,5 +1,6 @@
 const {DataTypes} = require('sequelize');
 const { sequelize } = require('../../connection');
+const bcrypt = require('bcrypt');
 
 const Signup = sequelize.define('signup', {
     id: {
@@ -21,8 +22,17 @@ const Signup = sequelize.define('signup', {
         }
     },
     password: {
-        type: DataTypes.TEXT
+        type: DataTypes.TEXT,
     }
-})
+},
+{
+    hooks: {
+        beforeCreate: async (Signup) => {
+          const salt = await bcrypt.genSaltSync(10);
+          Signup.password = bcrypt.hashSync(Signup.password, salt);
+        }
+    }
+}
+)
 
 module.exports = { Signup };
