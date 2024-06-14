@@ -1,7 +1,6 @@
 const { User } = require("../model/user.model");
 // Get all users
 handlGetAllUser = async (req, res) => {
-  try {
     console.log('params => ', req.query)
     if(req.query){
       const results = await User.findAll({
@@ -13,25 +12,16 @@ handlGetAllUser = async (req, res) => {
       res.status(200).json({ msg: "Success", users: results });
     }
     
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Somthing went wrong", error: error });
   }
-};
 // Get user by id
 handleGetUserById = async (req, res) => {
-  try {
-    console.log(req);
     const user = await User.findByPk(req.params.id);
     console.log(user);
     res.status(200).json({ msg: "Success", user: user });
-  } catch (error) {
-    res.status(500).json({ msg: "Somthing went wrong", error: error });
-  }
+
 };
 // Create user
 handlPostUser = async (req, res) => {
-  try {
     const body = req.body;
 
     if (
@@ -52,13 +42,9 @@ handlPostUser = async (req, res) => {
     });
     console.log(results);
     res.status(201).json({ msg: "User successfully added", user: results });
-  } catch (error) {
-    res.status(500).json({ msg: "Somthing went wrong", error: error });
-  }
 };
 // Update user by id
 handleUpdateUserById = async (req, res) => {
-  try {
     const result = await User.update(
       { ...req.body },
       {
@@ -73,14 +59,9 @@ handleUpdateUserById = async (req, res) => {
       const user = await User.findByPk(req.params.id);
       res.status(200).json({ msg: "User updated", user: user });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: "Somthing went wrong", error: error });
-  }
 };
 // Delete user by id
 handleDeleteUserById = async (req, res) => {
-  try {
     const result = await User.destroy({
       where: {
         id: req.params.id,
@@ -95,9 +76,6 @@ handleDeleteUserById = async (req, res) => {
         msg: "User deleted successfully",
       });
     }
-  } catch (error) {
-    res.status(500).json({ msg: "Somthing went wrong", error: error });
-  }
 };
 
 module.exports = {

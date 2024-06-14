@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 }
 
 
-function validateToken(req, res, next) {
+validateToken = (req, res, next) =>{
     const authHeader = req.headers["authorization"];
     const token = authHeader.split(" ")[1];
     if (token === null) {
@@ -28,11 +28,9 @@ function validateToken(req, res, next) {
     });
   };
 
-handleErrors = () => {
-  return (err, req, res, next) => {
+handleErrors = (err, req, res, next) => {
     console.log("Catch by error middleware => " + err);
     res.status(500).json({msg: "Somthing went wrong", error: err});
-  };
 }
 
 module.exports = {logReqRes, handleErrors, validateToken};
