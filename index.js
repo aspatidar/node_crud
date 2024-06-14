@@ -4,7 +4,7 @@ const app = express();
 const {connectWithPostgres, sequelize}  = require('./connection');
 const routes = require('./router');
 const bodyparser = require('body-parser');
-const {logReqRes, handleErrors} = require('./middleware');
+const {logReqRes} = require('./middleware');
 const cors = require('cors');
 
 

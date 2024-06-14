@@ -1,4 +1,5 @@
-
+const jwt = require('jsonwebtoken');
+ 
  logReqRes = () => {
   return (req, res, next) => {
     console.log("A new request recived at => " + Date.now());
@@ -9,6 +10,24 @@
   };
 }
 
+
+function validateToken(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader.split(" ")[1];
+    if (token === null) {
+      res.status(400).send("Token not available");
+    }
+    // Verify Token 
+    jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
+      if (err) {
+        res.status(403).send("Token invalid");
+      } else {
+        req.user = user;
+        next();
+      }
+    });
+  };
+
 handleErrors = () => {
   return (err, req, res, next) => {
     console.log("Catch by error middleware => " + err);
@@ -16,4 +35,4 @@ handleErrors = () => {
   };
 }
 
-module.exports = {logReqRes, handleErrors};
+module.exports = {logReqRes, handleErrors, validateToken};
