@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
 handleSignup = async (req, res) => {
-  try {
+
     const body = req.body;
     const email = body.email;
     const user = await Signup.findOne({
@@ -23,13 +23,10 @@ handleSignup = async (req, res) => {
       password: body.password,
     });
     res.status(200).json({ msg: "User ragister successfully", user: result });
-  } catch (error) {
-    res.status(500).json({ msg: "Somthing went wrong", error: error });
-  }
+
 };
 
 handleSignIn = async (req, res) => {
-  try {
     const { email, password } = req.body;
     const user = await Signup.findOne({
       where: { email },
@@ -57,9 +54,6 @@ handleSignIn = async (req, res) => {
       email: user.email,
       accessToken: token,
     });
-  } catch (error) {
-    return res.status(500).send("Sign in error", error);
-  }
 };
 
 module.exports = {
