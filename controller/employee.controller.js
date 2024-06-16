@@ -1,7 +1,7 @@
 const { Employee } = require("../model/employee.model");
 
 // Get all employees
-handleGetAllEmployee = async (req, res) => {
+const handleGetAllEmployee = async (req, res) => {
     const results = await Employee.findAll();
     console.log("Employees", results);
     res
@@ -10,7 +10,7 @@ handleGetAllEmployee = async (req, res) => {
 };
 
 // Create employee
-handlPostEmployee = async (req, res) => {
+const handlePostEmployee = async (req, res) => {
     const body = req.body;
     const result = await Employee.create({
       first_name: body.first_name,
@@ -22,7 +22,7 @@ handlPostEmployee = async (req, res) => {
     res.status(200).json({ msg: "Success", employee: result });
 };
 // Update employee by id
-handlUpdateEmployeeById = async (req, res) => {
+const handleUpdateEmployeeById = async (req, res) => {
     const result = await Employee.update(
       { ...req.body },
       {
@@ -42,14 +42,14 @@ handlUpdateEmployeeById = async (req, res) => {
     }
 };
 // Get employee by id
-handleGetEmployeeById = async (req, res) => {
+const handleGetEmployeeById = async (req, res) => {
     const result = await Employee.findByPk(req.params.id);
     res
       .status(200)
       .json({ msg: "Successfully find employee details", employee: result });
 };
 // Delete employee by id
-handlDeleteEmployeeById = async (req, res) => {
+const handleDeleteEmployeeById = async (req, res) => {
     const result = await Employee.destroy({
       where: {
         id: req.params.id,
@@ -66,9 +66,9 @@ handlDeleteEmployeeById = async (req, res) => {
 };
 
 module.exports = {
-  handlPostEmployee,
+  handlePostEmployee,
   handleGetAllEmployee,
-  handlUpdateEmployeeById,
+  handleUpdateEmployeeById,
   handleGetEmployeeById,
-  handlDeleteEmployeeById,
+  handleDeleteEmployeeById,
 };
