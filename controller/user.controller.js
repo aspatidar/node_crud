@@ -4,7 +4,8 @@ const handlGetAllUser = async (req, res) => {
   console.log("params => ", req.query);
   if (req.query) {
     const results = await User.findAll({
-      where: [req.query],
+      limit: req.query.limit ? req.query.limit : 10,
+      offset: req.query.offset ? req.query.offset : 0 
     });
     res.status(200).json({ msg: "Success", users: results });
   } else {

@@ -2,7 +2,10 @@ const { Employee } = require("../model/employee.model");
 
 // Get all employees
 const handleGetAllEmployee = async (req, res) => {
-    const results = await Employee.findAll();
+    const results = await Employee.findAll({
+      limit: req.query.limit ? req.query.limit : 10,
+      offset: req.query.offset ? req.query.offset : 0 
+    });
     console.log("Employees", results);
     res
       .status(200)

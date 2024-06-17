@@ -7,12 +7,7 @@ const bodyParser = require("body-parser");
 const { logging, errorHandler } = require("./middleware");
 const cors = require("cors");
 
-app.use(
-  bodyParser.urlencoded({
-    // to support URL-encoded bodies
-    extended: true,
-  })
-);
+app.use(bodyParser.json());
 
 // Define the CORS options
 app.use(cors()); // Use the cors middleware with your options
