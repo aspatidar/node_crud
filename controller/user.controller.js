@@ -1,12 +1,22 @@
 const { User } = require("../model");
+const { Employee } = require("../model");
 // Get all users
 const handlGetAllUser = async (req, res) => {
   console.log("params => ", req.query);
   if (req.query) {
+    const query = req.query;
+    const offset = query.page ? (query.page - 1) * query.limit : 0;
+    const limit = query.limit ? query.limit : 10;
+    console.log(query, offset);
+
     const results = await User.findAll({
-      limit: req.query.limit ? req.query.limit : 10,
-      offset: req.query.offset ? req.query.offset : 0 
-    });
+      limit: limit,
+      offset: offset 
+    },
+    {
+      include: { model: Employee, as: 'Employee'}
+    },
+  );
     res.status(200).json({ msg: "Success", users: results });
   } else {
     const results = await User.findAll();
@@ -22,22 +32,22 @@ const handleGetUserById = async (req, res) => {
 // Create user
 const handlPostUser = async (req, res) => {
   const body = req.body;
-
+  const {first_name, last_name, email, gender} = body;
   if (
     !body ||
-    !body.first_name ||
-    !body.last_name ||
-    !body.email ||
-    !body.gender
+    !first_name ||
+    !last_name ||
+    !email ||
+    !gender
   ) {
     console.log(body);
     return res.status(401).json({ msg: "all fields are required ..." });
   }
   const results = await User.create({
-    first_name: body.first_name,
-    last_name: body.last_name,
-    email: body.email,
-    gender: body.gender,
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    gender: gender,
   });
   console.log(results);
   res.status(201).json({ msg: "User successfully added", user: results });

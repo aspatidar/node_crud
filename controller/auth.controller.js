@@ -3,8 +3,7 @@ const bcrypt = require("bcrypt");
 const {generateToken} = require('../middleware');
 
 const userSignup = async (req, res) => {
-  const body = req.body;
-  const email = body.email;
+  const {first_name, last_name, email, password} = body;
   const user = await Signup.findOne({
     where: { email },
   });
@@ -16,10 +15,10 @@ const userSignup = async (req, res) => {
   }
 
   const result = await Signup.build({
-    first_name: body.first_name,
-    last_name: body.last_name,
-    email: body.email,
-    password: body.password,
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    password: password,
   });
   await result.save();
   console.log(result, "result created");

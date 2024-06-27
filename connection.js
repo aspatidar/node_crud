@@ -17,6 +17,7 @@ connectWithPostgres = async () => {
     console.log("Connection has been established successfully.");
     // console.log('Table is created');
   } catch (error) {
+    process.exit(1);
     console.error("Unable to connect to the database:", error);
   }
 };
