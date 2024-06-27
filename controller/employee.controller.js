@@ -12,9 +12,6 @@ const handleGetAllEmployee = async (req, res) => {
       limit: limit,
       offset: offset,
     },
-    {
-      include: { model: User, as: "User" },
-    }
   );
   res
     .status(200)

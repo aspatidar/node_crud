@@ -1,5 +1,6 @@
 const { User } = require("../model");
 const { Employee } = require("../model");
+const { Op } = require("sequelize");
 // Get all users
 const handlGetAllUser = async (req, res) => {
   console.log("params => ", req.query);
@@ -7,16 +8,22 @@ const handlGetAllUser = async (req, res) => {
     const query = req.query;
     const offset = query.page ? (query.page - 1) * query.limit : 0;
     const limit = query.limit ? query.limit : 10;
-    console.log(query, offset);
-
+    const searchQuery = query.searchQuery ? "%" + query.searchQuery + "%" : "";
+    
     const results = await User.findAll({
       limit: limit,
-      offset: offset 
-    },
-    {
-      include: { model: Employee, as: 'Employee'}
-    },
-  );
+      offset: offset,
+      order: ["first_name"],
+      where: {
+        [Op.or]: [
+          {
+            first_name: {
+              [Op.iLike]: searchQuery,
+            },
+          },
+        ],
+      },
+    });
     res.status(200).json({ msg: "Success", users: results });
   } else {
     const results = await User.findAll();
@@ -32,14 +39,8 @@ const handleGetUserById = async (req, res) => {
 // Create user
 const handlPostUser = async (req, res) => {
   const body = req.body;
-  const {first_name, last_name, email, gender} = body;
-  if (
-    !body ||
-    !first_name ||
-    !last_name ||
-    !email ||
-    !gender
-  ) {
+  const { first_name, last_name, email, gender } = body;
+  if (!body || !first_name || !last_name || !email || !gender) {
     console.log(body);
     return res.status(401).json({ msg: "all fields are required ..." });
   }
@@ -92,5 +93,5 @@ module.exports = {
   handleGetUserById,
   handlPostUser,
   handleUpdateUserById,
-  handleDeleteUserById
-}
+  handleDeleteUserById,
+};
